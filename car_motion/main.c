@@ -178,13 +178,23 @@ void car_stop(void)
 }
 
 // ==================================================
-// Shoot: brief forward pulse, then resume whatever
-// motion was active beforehand (or stop, if idle)
+// Shoot: brief pulse in the requested direction, then
+// resume whatever motion was active beforehand (or
+// stop, if idle)
+// shoot_dir: '2' = forward, '8' = backward,
+//            '4' = left, '6' = right
 // ==================================================
-void car_shoot(uint8_t drive_speed, uint8_t turn_speed, char resume_motion)
+void car_shoot(uint8_t drive_speed, uint8_t turn_speed, char shoot_dir, char resume_motion)
 {
     // Push pulse always fires at full power, regardless of power mode
-    car_forward(SPEED_HIGH_DRIVE);
+    switch (shoot_dir)
+    {
+        case '8': car_backward(SPEED_HIGH_DRIVE);  break;
+        case '4': car_turn_left(SPEED_HIGH_TURN);  break;
+        case '6': car_turn_right(SPEED_HIGH_TURN); break;
+        case '2':
+        default:  car_forward(SPEED_HIGH_DRIVE);   break;
+    }
     _delay_ms(SHOOT_PULSE_MS);
 
     switch (resume_motion)
@@ -293,8 +303,26 @@ int main(void)
                         break;
 
                     case '1':
-                        // SHOOT (brief forward pulse, then resume prior motion)
-                        car_shoot(drive_speed, turn_speed, current_motion);
+                        // SHOOT FORWARD (brief forward pulse, then resume prior motion)
+                        car_shoot(drive_speed, turn_speed, '2', current_motion);
+                        suppress_next_stop = 1;
+                        break;
+
+                    case '9':
+                        // SHOOT BACK
+                        car_shoot(drive_speed, turn_speed, '8', current_motion);
+                        suppress_next_stop = 1;
+                        break;
+
+                    case '7':
+                        // SHOOT LEFT
+                        car_shoot(drive_speed, turn_speed, '4', current_motion);
+                        suppress_next_stop = 1;
+                        break;
+
+                    case '3':
+                        // SHOOT RIGHT
+                        car_shoot(drive_speed, turn_speed, '6', current_motion);
                         suppress_next_stop = 1;
                         break;
 
