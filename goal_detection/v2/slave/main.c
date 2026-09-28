@@ -23,7 +23,7 @@
 // can flicker the ADC reading around THRESHOLD for a while, which would
 // otherwise register as several goals in a row; once a goal is counted,
 // ignore further beam-block edges for this long.
-#define GOAL_COOLDOWN_MS 5000UL
+#define GOAL_COOLDOWN_MS 2000UL
 #define GOAL_COOLDOWN_TICKS (GOAL_COOLDOWN_MS / 10UL)
 
 #define BAUD 9600

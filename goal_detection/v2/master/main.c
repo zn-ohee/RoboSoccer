@@ -13,7 +13,7 @@
 // Laser sensor characteristics (LDR receiving the beam):
 // Laser ON / beam hitting sensor (idle, no goal): raw ~= 1023
 // Laser blocked / beam interrupted (GOAL):        raw < 900
-#define THRESHOLD 900
+#define THRESHOLD 850
 
 // If the raw ADC value jumps by more than this from the last displayed
 // value, refresh the LCD immediately instead of waiting for the periodic update.
